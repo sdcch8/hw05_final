@@ -1,0 +1,33 @@
+{% extends "post_form_base.html" %}
+
+{% block title %}
+    {% if id.post_id %}
+        Редактировать запись
+    {% else %}
+        Добавить запись
+    {% endif %}
+{% endblock %}
+
+{% block header %}
+    {% if id.post_id %}
+        Редактировать запись
+    {% else %}
+        Добавить запись
+    {% endif %}
+{% endblock %}
+
+{% block button_label %}
+    {% if id.post_id %}
+        Сохранить
+    {% else %}
+        Добавить
+    {% endif %}
+{% endblock %}
+
+{% block url %}
+    {% if id.post_id %}
+        {% url 'posts:edit_post' id.username id.post_id %}
+    {% else %}
+        {% url 'posts:new_post' %}
+    {% endif %}
+{% endblock %}
