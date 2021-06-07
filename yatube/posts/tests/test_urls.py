@@ -11,8 +11,10 @@ class URLTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
         cls.user = User.objects.create_user(username='foo')
         cls.other_auth_user = User.objects.create_user(username='bar')
+
         cls.group = Group.objects.create(
             title='Заголовок тестовой группы',
             slug='test-group',
@@ -33,6 +35,7 @@ class URLTests(TestCase):
             f'/{cls.user.username}/{cls.post.id}/edit/': 302,
             '/test404/': 404,
         }
+
         cls.urls_authorized = cls.urls_guest.copy()
         cls.urls_authorized.update(
             {
@@ -40,8 +43,10 @@ class URLTests(TestCase):
                 f'/{cls.user.username}/{cls.post.id}/edit/': 200,
             }
         )
+
         cls.url_auth = reverse('login')
         cls.url_new_post = reverse('posts:new_post')
+
         cls.redirects_guest = {
             f'{cls.url_new_post}': f'{cls.url_auth}?next={cls.url_new_post}',
             f'/{cls.user.username}/{cls.post.id}/edit/':

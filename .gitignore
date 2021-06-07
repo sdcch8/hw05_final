@@ -150,3 +150,14 @@ static/
 yatube/posts/static/
 yatube/media/
 
+
+# user defined folders
+.vscode/
+static/
+media/
+
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover 

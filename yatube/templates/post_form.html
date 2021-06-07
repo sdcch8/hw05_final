@@ -1,4 +1,4 @@
-{% extends "post_form_base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
     {% if id.post_id %}
@@ -8,26 +8,58 @@
     {% endif %}
 {% endblock %}
 
-{% block header %}
-    {% if id.post_id %}
-        Редактировать запись
-    {% else %}
-        Добавить запись
-    {% endif %}
-{% endblock %}
+{% block content %}
 
-{% block button_label %}
-    {% if id.post_id %}
-        Сохранить
-    {% else %}
-        Добавить
-    {% endif %}
-{% endblock %}
+    <div class="row justify-content-center">
+        <div class="col-md-8 p-5">
+            <div class="card">
+                <div class="card-header">
+                    {% block header %}
+                        {% if id.post_id %}
+                            Редактировать запись
+                        {% else %}
+                            Добавить запись
+                        {% endif %}
+                    {% endblock %}
+                </div>
+                <div class="card-body">
 
-{% block url %}
-    {% if id.post_id %}
-        {% url 'posts:edit_post' id.username id.post_id %}
-    {% else %}
-        {% url 'posts:new_post' %}
-    {% endif %}
+                        {% for error in form.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    <form method="post" enctype="multipart/form-data" action="{% if id.post_id %}{% url 'posts:edit_post' id.username id.post_id %}{% else %}{% url 'posts:new_post' %}{% endif %}">
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                            <div class="form-group row" aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}>
+                                    <label for="{{ field.id_for_label }}" class="col-md-4 col-form-label text-md-right">{{ field.label }}{% if field.field.required %}<span class="required">*</span>{% endif %}</label>
+                                    <div class="col-md-6">
+                                        {{ field }}
+                                        {% if field.help_text %}
+                                        <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+                                        {% endif %}
+                                    </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="col-md-6 offset-md-4">              
+                                <button type="submit" class="btn btn-primary">
+                                    {% block button_label %}
+                                        {% if id.post_id %}
+                                            Сохранить
+                                        {% else %}
+                                            Добавить
+                                        {% endif %}
+                                    {% endblock %}
+                                </button>
+                        </div>
+                    </form>
+                </div> <!-- card body -->
+            </div> <!-- card -->
+        </div> <!-- col -->
+    </div> <!-- row -->
+
 {% endblock %}

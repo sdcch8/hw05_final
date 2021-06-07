@@ -3,7 +3,7 @@
 
 {% if user.is_authenticated %}
   <div class="card my-4">
-    <form method="post" action="{{ url }}">
+    <form method="post" action="{{ comment_url }}">
       {% csrf_token %}
       <h5 class="card-header">Добавить комментарий:</h5>
       <div class="card-body">
@@ -25,6 +25,7 @@
           href="{% url 'posts:profile' item.author.username %}"
           name="comment_{{ item.id }}"
         >{{ item.author.username }}</a>
+        <small class="text-muted">{{ item.created }}</small>
       </h5>
       <p>{{ item.text|linebreaksbr }}</p>
     </div>

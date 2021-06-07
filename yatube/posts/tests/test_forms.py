@@ -63,11 +63,7 @@ class NewPostFormTests(TestCase):
         self.assertRedirects(response, reverse('posts:index'))
         self.assertEqual(Post.objects.count(), posts_count + 1)
 
-        post = Post.objects.filter(text=form_data['text'],
-                                   author=NewPostFormTests.user,
-                                   group=NewPostFormTests.group.id,
-                                   image='posts/small.gif'
-                                   ).first()
+        post = Post.objects.all().first()
 
         self.assertEqual(post.text, form_data['text'])
         self.assertEqual(post.author, NewPostFormTests.user)
