@@ -316,6 +316,7 @@ class CommentsTests(TestCase):
         self.authorized_client.force_login(CommentsTests.user_commentator)
 
     def test_authorized_user_comment(self):
+        """Тестирование комментариев авторизованным пользователем"""
         comment = 'test comment'
         response = self.authorized_client.post(
             reverse('posts:add_comment',
@@ -332,6 +333,7 @@ class CommentsTests(TestCase):
         )
 
     def test_unauthorized_user_comment(self):
+        """Тестирование комментариев неавторизованным пользователем"""
         comment = 'test comment'
         initial_comments_count = Comment.objects.filter(
             author_id=CommentsTests.user_commentator.id,
