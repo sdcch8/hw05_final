@@ -132,22 +132,25 @@ def add_comment(request, username, post_id):
 
 @login_required
 def profile_follow(request, username):
-    author = User.objects.filter(username=username).first()
-    if (author.id == request.user.id
+    author = get_object_or_404(User, username=username)
+    if (author == request.user
        or author.following.filter(user_id=request.user.id).exists()):
-        return redirect(request.META.get('HTTP_REFERER', '/'))
+        return redirect(request.META.get('HTTP_REFERER',
+                                         reverse('posts:index')))
 
     following = author.following.create(user_id=request.user.id)
     following.save()
-    return redirect(request.META.get('HTTP_REFERER', '/'))
+    return redirect(request.META.get('HTTP_REFERER',
+                                     reverse('posts:index')))
 
 
 @login_required
 def profile_unfollow(request, username):
-    author = User.objects.filter(username=username).first()
+    author = get_object_or_404(User, username=username)
     following = author.following.filter(user_id=request.user.id)
     following.delete()
-    return redirect(request.META.get('HTTP_REFERER', '/'))
+    return redirect(request.META.get('HTTP_REFERER',
+                                     reverse('posts:index')))
 
 
 @login_required
